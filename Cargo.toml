@@ -1,0 +1,7 @@
+[package]
+name = "toc-auto-add"
+version = "0.1.0"
+authors = ["jtianling <jtianling@gmail.com>"]
+
+[dependencies]
+regex = ">0.1.0"
