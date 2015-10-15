@@ -82,15 +82,19 @@ fn get_file_titles(file_content: &str) -> Vec<Title> {
 fn get_escaped_title_link(title: &str) -> String {
   println!("original title: {}", title);
 
-  let trim_last_unuse_re = Regex::new(r"(\s|\.)$").unwrap();
+  let trim_last_unuse_re = Regex::new(r"([:punct:]|[:space:])+$").unwrap();
   let trimed_title = trim_last_unuse_re.replace(&title, "");
   println!("trimed title: {}", trimed_title);
 
-  let escape_re = Regex::new(r"\s|\.").unwrap();
+  let escape_re = Regex::new(r"[:punct:]|[:space:]").unwrap();
   let escaped_title = escape_re.replace_all(&trimed_title, "-");
   println!("escaped title: {}", escaped_title);
 
-  return escaped_title.to_lowercase();
+  let delete_multiple_re = Regex::new(r"-+").unwrap();
+  let deleted_multiple_title = delete_multiple_re.replace_all(&escaped_title, "-");
+  println!("delted multiple title: {}", deleted_multiple_title);
+
+  return deleted_multiple_title.to_lowercase();
 }
 
 fn create_toc(file_titles: &Vec<Title>) -> String {
