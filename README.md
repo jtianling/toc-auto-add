@@ -2,6 +2,8 @@
 因为该工具添加目录时是会在原来的文章中直接添加和刷新, 有损坏文章本身的风险, 请一定保存好原版文章(比如在git中commit过了)后再使用, 本人不因为你使用该工具造成的损害负责, 千万注意.  
 事实上我就出现过修改后的文章用vim打开乱码的情况, 但是通过atom编辑又是正确的情况
 
+以下目录即用本工具生成:
+
 **目录**:
 
 * [为什么需要一个这样的工具](#为什么需要一个这样的工具)
@@ -64,18 +66,3 @@ redcarpet:
   extensions: ["fenced_code_blocks", "with_toc_data"]
 ~~~
 
-�形式, 也就是老外说的**fenced code blocks**形式
-4. 我分析文章实际是没有markdown那么强大, 就是简单的文本分析, 请在标题中不要再使用类似`**`强调这种markdown语法了, 会导致链接生成错误
-5. 添加一次以后, 文章更新以后, 只要保证toc区域没有被破坏, 可重复执行以刷新toc内容
-
-假如你同样是使用Github Pages, 那么相关配置大概是这样子的:
-
-~~~ yaml
-markdown:      redcarpet
-markdown_ext:  md
-
-excerpt_separator: "<!-- more -->"
-
-redcarpet:
-  extensions: ["fenced_code_blocks", "with_toc_data"]
-~~~
