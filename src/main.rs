@@ -2,11 +2,11 @@ extern crate regex;
 use regex::Regex;
 use std::io::prelude::*;
 use std::io;
-use std::io::SeekFrom;
 use std::env;
 use std::iter::*;
 use std::fmt;
 use std::fs::OpenOptions;
+use std::fs::File;
 
 struct Title {
   title: String,
@@ -152,17 +152,18 @@ fn add_or_replace_toc(file_content: &str, toc: &str) -> String {
 }
 
 fn process_file(filename: &str) -> Result<(), io::Error> {
-  let mut file = try!(OpenOptions::new().read(true).write(true).open(filename));
+  let mut file = try!(OpenOptions::new().read(true).open(filename));
   let mut file_content = String::new();
   try!(file.read_to_string(&mut file_content));
+
+  drop(file);
   
   let file_titles: Vec<Title> = get_file_titles(&file_content);
   let toc = create_toc(&file_titles);
   let file_content_with_toc = add_or_replace_toc(&file_content, &toc);
 
-  let bytes = file_content_with_toc.into_bytes();
-  try!(file.seek(SeekFrom::Start(0)));
-  try!(file.write_all(&bytes));
+  file = try!(File::create(filename));
+  try!(file.write_all(file_content_with_toc.as_bytes()));
   try!(file.sync_all());
 
   Ok(())
